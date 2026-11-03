@@ -126,6 +126,14 @@ public class TasksController {
         return Map.of("error", e.getMessage());
     }
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, String> serverError(Exception e) {
+        log.error("Request failed", e);
+        return Map.of("error", e.getClass().getSimpleName(),
+                "message", String.valueOf(e.getMessage()));
+    }
+
     static class UnauthorizedException extends RuntimeException {
         UnauthorizedException(String m) { super(m); }
     }
